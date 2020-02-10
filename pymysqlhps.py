@@ -1,4 +1,8 @@
 #!/usr/bin/env python3
+
+# License GNU Public License GPL-2.0 http://opensource.org/licenses/gpl-2.0
+# Created by Eugene K., 2019
+
 import pymysql
 import datetime
 import os
