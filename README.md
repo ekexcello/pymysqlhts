@@ -1,2 +1,8 @@
-# pymysqlhts
-pymysqlhts - Python script for Htop-like MySQL querying
+# pymysqlhps
+pymysqlhps - Python script for Htop-like MySQL processlist querying
+
+## Required python modules:
+* pymysql
+* hashlib
+* curses
+
