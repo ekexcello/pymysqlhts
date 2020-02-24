@@ -2,12 +2,13 @@
 
 # License GNU Public License GPL-2.0 http://opensource.org/licenses/gpl-2.0
 # Created by Eugene K., 2019
-
 import pymysql
 import datetime
 import os
 import time
+import hashlib
 from settings import *
+
 #read passowrd from .my.cnf
 if len(mycnf.strip()) > 0 :
     mycnffile = open(mycnf, 'r')
@@ -33,8 +34,8 @@ try:
   while True:
 #get time...
     hrtstamp=datetime.datetime.now().strftime("%Y-%m-%d-%H-%M-%S")
-    fname=snapdirectory+"sqlprocesses-"+hrtstamp+".log"
-    sname=snapdirectory+"sqlprocesses-"+hrtstamp+".short.log"
+    filesuffix=hashlib.md5(hrtstamp.encode('utf-8')).hexdigest()[0:10]
+    fname=snapdirectory+"sqlprocesses-"+hrtstamp+"."+filesuffix+".log"
     t1=datetime.datetime.now()
 #execute SQL query
     cursor=connection.cursor()
@@ -46,18 +47,13 @@ try:
     nr=cursor.rowcount
     if nr > 0:
 #open STAMP files, print results...
-        print("returned %d lines:" % nr)
         fsf=open(fname,"a")
-        ssf=open(sname,"a")
         for row in cursor.fetchall():
              for i in range(0,len(row)-1):
                  print("%s\t" % row[i], end = '',file=fsf)
-                 print("%s\t" % row[i], end = '',file=ssf)
              print("\t\t%s" % row[len(row)-1],file=fsf)
-             print("",file=ssf)
              maxtime=row[1]
         fsf.close()
-        ssf.close()
         print("%s\t%s\t\t\t%i\t\t%s" % (hrtstamp,str(round(1000000*td.total_seconds())),nr,maxtime),file=stf)
         stf.flush()
     time.sleep(interval)
