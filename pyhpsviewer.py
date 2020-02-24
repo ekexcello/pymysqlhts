@@ -9,6 +9,7 @@ import time
 import hashlib
 import curses
 import re
+import sys
 from settings import *
 
 def readfilelist():
@@ -31,8 +32,13 @@ def getfilelines(filename):
 def display(stdscr):
     stdscr.clear()
     files=readfilelist()
-    listposition=len(files)-1
     maxlistposition=len(files)-1
+    if defaultline!='':
+        for f in files:
+            if defaultline in f:
+               listposition=files.index(f)
+    else:
+        listposition=len(files)-1
     skiplines=0
     while True:
         try:
@@ -85,10 +91,11 @@ def display(stdscr):
         except Exception as e:
             stdscr.addstr(0,0,"%s" % format(e))
             stdscr.refresh()
-#           curses.nocbreak()
-#	    stdscr.keypad(False)
-#	    curses.echo()
-#	    curses.endwin()
             return
 
+#check for any present command line argument. If present, treat it as file name to open (if possible)
+if (len(sys.argv)) > 1:
+   defaultline=os.path.basename(sys.argv[1])
+else:
+   defaultline=''
 curses.wrapper(display)
