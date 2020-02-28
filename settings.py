@@ -12,4 +12,4 @@ mycnf="/root/.my.cnf"
 monitorquery='select ID,TIME,COMMAND,State,MAX_MEMORY_USED,info from INFORMATION_SCHEMA.PROCESSLIST ORDER BY TIME ASC;'
 snapdirectory="/var/log/sqlstats/"
 #viewer will try to process files with following mask:
-filemask=".*[0-9]{4}-[0-9]{2}-[0-9]{2}-[0-9]{2}-[0-9]{2}-[0-9]{2}.log"
+filemask=".*[0-9]{4}-[0-9]{2}-[0-9]{2}-[0-9]{2}-[0-9]{2}-[0-9]{2}.*.log"
